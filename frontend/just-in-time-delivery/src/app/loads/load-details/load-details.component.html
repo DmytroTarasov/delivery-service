@@ -1,0 +1,44 @@
+<div class="row mx-0 mt-50" *ngIf="load">
+    <h2 class="text-center fst-italic mb-3">{{ 'LoadDetails-translate' | translate }}</h2>
+    <div class="col-12 col-sm-8 offset-sm-2 col-md-4 offset-md-0">
+        <div class="card mb-3">
+            <div class="card-body fst-italic">
+                <h5 class="card-title text-success">{{ load.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted mb-3"> {{ 'Created-translate' | translate }} {{ transformDate(load.created_date) | timeAgo }}</h6>
+                <p class="card-text"><span class="text-success">{{ 'LoadPickupAddressLabel' | translate }}:</span> {{ load.pickup_address }}</p>
+                <p class="card-text"><span class="text-success">{{ 'LoadDeliveryAddressLabel' | translate }}:</span> {{ load.delivery_address }}</p>
+                <p class="card-text"><span class="text-success">{{ 'LoadStatusLabel' | translate }}:</span> {{ load.status }}</p>
+                <p class="card-text"><span class="text-success" *ngIf="load.state">State:</span> {{ load.state }}</p>
+                <p class="card-text"><span class="text-success">{{ 'LoadPayloadLabel' | translate }}:</span> {{ load.payload }}</p>
+                <p class="card-text"><span class="text-success">{{ 'LoadWidthLabel' | translate }}:</span> {{ load.dimensions.width }}</p>
+                <p class="card-text"><span class="text-success">{{ 'LoadHeightLabel' | translate }}:</span> {{ load.dimensions.height }}</p>
+                <p class="card-text"><span class="text-success">{{ 'LoadLengthLabel' | translate }}:</span> {{ load.dimensions.length }}</p>
+
+                <p class="card-text" *ngIf="user.role === 'SHIPPER'; else created_by"><span class="text-success">{{ 'LoadDriverEmailLabel-translate' | translate }}: </span>{{ load.assigned_to ? load.assigned_to.email : '-' }}</p>
+
+                <ng-template #created_by>
+                    <p class="card-text">
+                        <span class="text-success">{{ 'LoadShipperEmailLabel-translate' | translate }}: </span>{{ load.created_by ? load.created_by.email : '-' }}
+                    </p>
+                </ng-template>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-8 offset-sm-2 col-md-8 offset-md-0" [ngClass]="{ 'd-flex': addressNotFound }">
+        <div>
+            <agm-map *ngIf="!addressNotFound && checkedAddresses === 2">
+                <agm-direction
+                    [origin]="this.load.pickup_address" 
+                    [destination]="this.load.delivery_address">
+                </agm-direction>
+            </agm-map> 
+        </div>
+        <h3 *ngIf="addressNotFound && checkedAddresses === 2" class="text-center fst-italic">{{ 'LoadAddressIsInvalid' | translate }}</h3>
+        <mat-spinner [diameter]="70" *ngIf="loading" class="mx-auto"></mat-spinner>
+    </div>
+</div>
+
+<mat-spinner [diameter]="80" *ngIf="!load" class="mt-50 mx-auto"></mat-spinner>
+

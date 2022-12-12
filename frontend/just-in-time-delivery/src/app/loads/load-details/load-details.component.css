@@ -1,0 +1,12 @@
+agm-map {
+    height: 500px;
+}
+
+.d-flex {
+    display: flex;
+    align-items: center;
+}
+
+.mt-50 {
+    margin-top: 50px;
+}

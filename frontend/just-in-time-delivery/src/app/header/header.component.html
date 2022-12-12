@@ -1,0 +1,38 @@
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <div>
+            <a [routerLink]="'/'" class="navbar-brand mb-0 h1">Just-In-Time Delivery</a>
+        </div>
+
+        <ul class="nav justify-content-center justify-content-md-end align-items-center">
+
+            <li class="nav-item">
+                <div class="profile-photo">
+                    <img [src]="'http://localhost:8080/' + user.image" alt="Profile photo" *ngIf="user && user.image">
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a [routerLink]="'auth/changePassword'" class="nav-link text-secondary" *ngIf="user">{{ 'changePasswordMenu-translate' | translate }}</a>
+            </li>
+
+            <li class="nav-item">
+                <a [routerLink]="'/'" class="nav-link text-secondary" *ngIf="user">{{ user.email }}</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-secondary" *ngIf="isAuthenticated" (click)="onLogout()"
+                    style="cursor: pointer">{{ 'Logout-translate' | translate }}</a>
+            </li>
+
+            <li class="nav-item">
+                <select #langSelect (change)="translateService.use(langSelect.value)" class="form-select">
+                    <option *ngFor="let lang of translateService.getLangs()" [value]="lang"
+                        [attr.selected]="lang === translateService.currentLang ? '' : null">{{lang}}</option>
+                </select>
+            </li>
+
+        </ul>
+
+    </div>
+</nav>

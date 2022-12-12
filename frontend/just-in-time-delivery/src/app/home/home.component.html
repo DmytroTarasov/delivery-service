@@ -1,0 +1,5 @@
+<app-header></app-header>
+<app-driver *ngIf="driverMode; else shipper"></app-driver>
+<ng-template #shipper>
+    <app-shipper></app-shipper>
+</ng-template>

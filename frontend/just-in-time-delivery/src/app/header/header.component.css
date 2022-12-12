@@ -1,0 +1,11 @@
+.profile-photo {
+    margin: 5px 0;
+    height: 60px;
+}
+
+.profile-photo img {
+    height: 100%;
+    width: 100%;
+    clip-path: circle();
+    object-fit: cover;
+}

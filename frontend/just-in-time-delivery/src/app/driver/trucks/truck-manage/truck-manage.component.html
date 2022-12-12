@@ -1,0 +1,32 @@
+<div class="row mx-0 mt-100">
+    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+        <form [formGroup]="truckForm" (ngSubmit)="onSubmit()" *ngIf="truckForm">
+            <div>
+                <label for="type" class="form-label mb-3">{{ 'TruckType-translate' | translate }}</label>
+                <select class="form-select mb-3" (change)="changeType($event)" formControlName="type" id="type">
+                    <option value="SPRINTER">SPRINTER</option>
+                    <option value="SMALL STRAIGHT">SMALL STRAIGHT</option>
+                    <option value="LARGE STRAIGHT">LARGE STRAIGHT</option>
+                </select>
+                <span class="text-danger" *ngIf="!truckForm.get('type')!!.valid && truckForm.get('type')!!.touched">
+                    <span *ngIf="truckForm.get('type')!!.errors!!['required']">
+                        {{ 'TruckTypeValidation-translate' | translate }}
+                    </span>
+                </span>
+
+            </div>
+
+            <p *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</p>
+
+            <div class="mx-auto w-25">
+                <button class="btn btn-success w-100" type="submit" [disabled]="!truckForm.valid" *ngIf="!formSubmitting && updatingMode">{{ 'Update-translate' | translate | uppercase }}</button>
+
+                <button class="btn btn-success w-100" type="submit" [disabled]="!truckForm.valid" *ngIf="!formSubmitting && !updatingMode">{{ 'Create-translate' | translate | uppercase }}</button>
+
+                <mat-spinner [diameter]="40" *ngIf="formSubmitting" class="mx-auto"></mat-spinner>
+            </div>
+        </form>
+        <mat-spinner *ngIf="!truckForm"></mat-spinner>
+    </div>
+</div>
+

@@ -1,0 +1,47 @@
+<div class="row m-0">
+    <div class="col-12 col-md-6 offset-md-3 mt-5">
+        <h2 class="text-center mb-3">{{ 'Chat-translate' | translate }}</h2>
+        <div class="card">
+            <div class="card-body p-0">
+                <h6 class="card-subtitle mb-2 text-center bg-success text-light lh-lg" *ngIf="load && user">{{ user.role === 'DRIVER' ? load.created_by.email : load.assigned_to.email }}</h6>
+                <p class="card-text p-2 m-0 text-muted text-center" *ngIf="load && load.messages && load.messages.length === 0">{{ 'StartMessaging-translate' | translate }}...</p>
+
+                <ng-container *ngIf="user && load && load.messages">
+                    <div class="row mx-2">
+                        <div class="p-2 mb-2 border border-success rounded col-7" *ngFor="let message of load.messages"
+                        [ngClass]="{'offset-5': message.author === user._id }">
+                            <p class="card-text d-inline" [ngClass]="{'text-right': message.author === user._id, 
+                            'text-left': message.author !== user._id}">{{ message.text }}</p>
+                            <span class="fs-6 d-inline-block float-end text-muted">{{ transformDate(message.created_date) | timeAgo }}</span>
+                        </div>
+                    </div>
+                   
+                </ng-container>
+
+                <mat-spinner diameter="40" *ngIf="loadLoading" class="mx-auto"></mat-spinner>
+                
+                <form [formGroup]="chatForm" (ngSubmit)="onSubmit()" *ngIf="chatForm">
+                    
+                    <div class="row m-0 p-2">
+                        <div class="col-9 px-0">
+                            <input type="text" id="text" class="form-control" formControlName="text" placeholder="{{ 'YourMessagePlaceholder-translate' | translate }}">
+                            <span class="text-danger" *ngIf="!chatForm.get('text')!!.valid && chatForm.get('text')!!.touched">
+                                <span *ngIf="chatForm.get('text')!!.errors!!['required']">
+                                    {{ 'MessageTextValidation-translate' | translate }}
+                                </span>
+                            </span>
+                        </div>
+
+                        <div class="col-3 px-0">
+                            <button class="btn btn-secondary w-100" type="submit" [disabled]="!chatForm.valid">{{ 'SendMessageTranslate' | translate }}</button>
+                        </div>
+                    </div>
+        
+                    <p *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</p>
+        
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+.email-sent {
+    height: 40px;
+    background-color: lightgreen;
+    border: 1px solid forestgreen;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mt-100 {
+    margin-top: 100px;
+}

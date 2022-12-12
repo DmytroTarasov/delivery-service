@@ -1,0 +1,22 @@
+<div *ngIf="!iteratingToNextState">
+    <h3 class="text-center mb-4">{{ 'LoadStateLabel' | translate }}</h3>
+    <div class="row m-0">
+        <div class="col-10 offset-1 col-sm-8 offset-sm-2">
+    
+            <p [appBasicHighlight]="load.state | uppercase" class="text-center fs-5">En Route to Pick Up</p>
+            <p [appBasicHighlight]="load.state | uppercase" class="text-center fs-5">Arrived to Pick Up</p>
+            <p [appBasicHighlight]="load.state | uppercase" class="text-center fs-5">En Route to delivery</p>
+            <p [appBasicHighlight]="load.state | uppercase" class="text-center fs-5">Arrived to delivery</p>
+    
+        </div>  
+    </div>
+
+    <button 
+        class="btn btn-warning text-uppercase mt-4 d-block mx-auto" 
+        (click)="iterateToNextState()" 
+        *ngIf="!iteratingToNextState"
+        [disabled]="load.state === 'Arrived to Delivery'">
+        {{ 'MoveToNextState' | translate | uppercase }}
+    </button>
+</div>
+<mat-spinner [diameter]="70" *ngIf="iteratingToNextState" class="mx-auto mt-50"></mat-spinner>

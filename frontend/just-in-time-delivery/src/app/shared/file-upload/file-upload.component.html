@@ -1,0 +1,11 @@
+<div class="mb-3">
+    <label for="image" class="form-label">{{ 'UserImageLabel-translate' | translate }}</label>
+    <input class="form-control" id="image" type="file" accept=".jpg,.png,.jpeg" />
+
+    <div class="image-upload-preview">
+        <div>
+            <img [src]="previewUrl" alt="Preview" *ngIf="previewUrl">
+        </div>
+    </div>
+
+</div>

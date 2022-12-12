@@ -1,0 +1,22 @@
+<mat-tab-group mat-align-tabs="center" [(selectedIndex)]="selectedTabIndex">
+    <mat-tab label="{{ 'NewLoads-translate' | translate }}">
+        <ng-template matTabContent>
+            <app-loads (tabIndexChanged)="onTabIndexChanged($event)" [status]="'NEW'" [driverMode]="false"></app-loads>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="{{ 'PostedLoads-translate' | translate }}">
+        <ng-template matTabContent>
+            <app-loads [status]="'POSTED'" [driverMode]="false"></app-loads>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="{{ 'AssignedLoads-translate' | translate }}">
+        <ng-template matTabContent>
+            <app-loads [status]="'ASSIGNED'" (tabIndexChanged)="onTabIndexChanged($event)" [driverMode]="false"></app-loads>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="{{ 'ShippedLoads-translate' | translate }}">
+        <ng-template matTabContent>
+            <app-loads [status]="'SHIPPED'" [driverMode]="false"></app-loads>
+        </ng-template>
+    </mat-tab>
+</mat-tab-group>

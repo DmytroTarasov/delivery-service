@@ -1,0 +1,94 @@
+<div class="row mt-50 mx-auto">
+    <h2 class="text-center mb-2">{{ 'NewLoad-translate' | translate }}</h2>
+    <div class="col-12 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3">
+        <form [formGroup]="loadForm" (ngSubmit)="onSubmit()" *ngIf="loadForm">
+            <div class="mb-3">
+                <label for="name" class="form-label">{{ 'LoadNameLabel' | translate }}</label>
+                <input type="text" id="name" class="form-control" formControlName="name">
+                <span class="text-danger" *ngIf="!loadForm.get('name')!!.valid && loadForm.get('name')!!.touched">
+                    <span *ngIf="loadForm.get('name')!!.errors!!['required']">
+                        {{ 'LoadNameValidation-translate' | translate }}
+                    </span>
+                </span>
+            </div>
+
+            <div class="mb-3">
+                <label for="payload" class="form-label">{{ 'LoadPayloadLabel' | translate }}</label>
+                <input type="text" id="payload" class="form-control" formControlName="payload">
+                <span class="text-danger" *ngIf="!loadForm.get('payload')!!.valid && loadForm.get('payload')!!.touched">
+                    <span *ngIf="loadForm.get('payload')!!.errors!!['required']">
+                        {{ 'LoadPayloadValidation-translate' | translate }}
+                    </span>
+                </span>
+            </div>
+
+            <div class="mb-3">
+                <label for="pickup_address" class="form-label">{{ 'LoadPickupAddressLabel' | translate }}</label>
+                <input type="text" id="pickup_address" class="form-control" formControlName="pickup_address">
+                <span class="text-danger" *ngIf="!loadForm.get('pickup_address')!!.valid && loadForm.get('pickup_address')!!.touched">
+                    <span *ngIf="loadForm.get('pickup_address')!!.errors!!['required']">
+                        {{ 'LoadPickupAddressValidation-translate' | translate }}
+                    </span>
+                </span>
+            </div>
+
+            <div class="mb-3">
+                <label for="delivery_address" class="form-label">{{ 'LoadDeliveryAddressLabel' | translate }}</label>
+                <input type="text" id="delivery_address" class="form-control" formControlName="delivery_address">
+                <span class="text-danger" *ngIf="!loadForm.get('delivery_address')!!.valid && loadForm.get('delivery_address')!!.touched">
+                    <span *ngIf="loadForm.get('delivery_address')!!.errors!!['required']">
+                        {{ 'LoadDeliveryAddressValidation-translate' | translate }}
+                    </span>
+                </span>
+            </div>
+
+            <div class="mb-3">
+                <label for="width" class="form-label">{{ 'LoadWidthLabel' | translate }}</label>
+                <input type="text" id="width" class="form-control" formControlName="width">
+                <span class="text-danger" *ngIf="!loadForm.get('width')!!.valid && loadForm.get('width')!!.touched">
+                    <span *ngIf="loadForm.get('width')!!.errors!!['required']">
+                        {{ 'LoadWidthValidation-translate' | translate }}
+                    </span>
+                </span>
+            </div>
+
+            <div class="mb-3">
+                <label for="height" class="form-label">{{ 'LoadHeightLabel' | translate }}</label>
+                <input type="text" id="height" class="form-control" formControlName="height">
+                <span class="text-danger" *ngIf="!loadForm.get('height')!!.valid && loadForm.get('height')!!.touched">
+                    <span *ngIf="loadForm.get('height')!!.errors!!['required']">
+                        {{ 'LoadHeightValidation-translate' | translate }}
+                    </span>
+                </span>
+            </div>
+
+            <div class="mb-3">
+                <label for="length" class="form-label">{{ 'LoadLengthLabel' | translate }}</label>
+                <input type="text" id="length" class="form-control" formControlName="length">
+                <span class="text-danger" *ngIf="!loadForm.get('length')!!.valid && loadForm.get('length')!!.touched">
+                    <span *ngIf="loadForm.get('length')!!.errors!!['required']">
+                        {{ 'LoadLengthValidation-translate' | translate }}
+                    </span>
+                </span>
+            </div>
+
+            <p *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</p>
+
+            <div class="row justify-content-center">
+                <div class="col-6 col-sm-5 col-md-4 col-lg-3 col-xl-2">
+
+                    <button class="btn btn-success text-uppercase mx-auto d-block w-100" type="submit" [disabled]="!loadForm.valid" *ngIf="!formSubmitting && updatingMode">{{ 'Update-translate' | translate }}</button>
+    
+                    <button class="btn btn-success text-uppercase mx-auto d-block w-100" type="submit" [disabled]="!loadForm.valid" *ngIf="!formSubmitting && !updatingMode">{{ 'Create-translate' | translate }}</button>
+
+                    <mat-spinner [diameter]="40" *ngIf="formSubmitting" class="mx-auto"></mat-spinner>
+
+                </div>
+            </div>
+
+        </form>
+        <mat-spinner *ngIf="!loadForm" class="mx-auto"></mat-spinner>
+    </div>
+</div>
+
+

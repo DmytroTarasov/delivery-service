@@ -1,0 +1,88 @@
+<div class="row justify-content-start mt-3 mx-0" *ngIf="!loadsLoading">
+    <h2 class="text-center mb-3" *ngIf="loads && loads.length > 0">{{ 'LoadsLabel-translate' | translate }}</h2>
+    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-0 col-lg-4" *ngFor="let load of loads; let i = index;">
+        <div class="card mb-3">
+            <div class="card-body fst-italic">
+                <h5 class="card-title text-success">{{ load.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted mb-3"> {{ 'Created-translate' | translate }} {{ transformDate(load.created_date) | timeAgo }}</h6>
+                <p class="card-text"><span class="text-success">{{ 'LoadPickupAddressLabel' | translate }}:</span> {{ load.pickup_address }}</p>
+                <p class="card-text"><span class="text-success">{{ 'LoadDeliveryAddressLabel' | translate }} :</span> {{ load.delivery_address }}</p>
+                <p class="card-text" *ngIf="status === 'ASSIGNED' && !driverMode"><span class="text-success">State:</span> {{ load.state }}</p>
+                <p class="card-text"><span class="text-success">{{ 'LoadPayloadLabel' | translate }}:</span> {{ load.payload }}</p>
+                <p class="card-text"><span class="text-success">{{ 'LoadWidthLabel' | translate }}:</span> {{ load.dimensions.width }}</p>
+                <p class="card-text"><span class="text-success">{{ 'LoadHeightLabel' | translate }}:</span> {{ load.dimensions.height }}</p>
+                <p class="card-text"><span class="text-success">{{ 'LoadLengthLabel' | translate }}:</span> {{ load.dimensions.length }}</p>
+      
+                <div *ngIf="status === 'NEW'">
+
+                    <button class="btn btn-primary w-50 mx-auto d-block mb-3" *ngIf="!loadPosting || postingIdx !== i"(click)="postLoad(load._id, i)" [ngClass]="{ 'fs-7': translateService.currentLang === 'uk' }">{{ 'PostLoad-translate' | translate | uppercase }}</button>
+
+                    <mat-spinner [diameter]="35" *ngIf="loadPosting && postingIdx === i" class="mx-auto mb-3"></mat-spinner>
+
+                    <div class="row mx-0">
+                        <div class="col-6 ps-0">
+                            <button class="btn btn-warning w-100" (click)="navigateToLoadManagePage(true, load._id)" [ngClass]="{ 'fs-7': translateService.currentLang === 'uk' }">{{ 'Update-translate' | translate | uppercase }}</button>
+                        </div>
+                        <div class="col-6 pe-0">
+                            <button class="btn btn-danger w-100" *ngIf="!loadDeleting || deletingIdx !== i" [ngClass]="{ 'fs-7': translateService.currentLang === 'uk' }" (click)="deleteLoad(load._id, i)">{{ 'Delete-translate' | translate | uppercase }}</button>
+
+                            <mat-spinner [diameter]="30" *ngIf="loadDeleting && deletingIdx === i" class="mx-auto mb-3"></mat-spinner>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="status !== 'NEW'">
+                    <button class="btn btn-info w-50 mx-auto d-block mb-3" (click)="navigateToLoadDetailsPage(load._id)"
+                    [ngClass]="{ 'fs-7': translateService.currentLang === 'uk' }">{{ 'View-translate' | translate | uppercase }}</button>
+                    <button class="btn btn-success w-50 mx-auto d-block mb-3" (click)="navigateToChatPage(load._id)"
+                    [ngClass]="{ 'fs-7': translateService.currentLang === 'uk' }">{{ 'Chat-translate' | translate | uppercase }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-0 col-lg-4 mt-5">
+        <app-stepper [load]="loads[0]" *ngIf="driverMode && status !== 'SHIPPED' && loads && loads.length > 0" (tabIndexChanged)="onTabIndexChanged($event)"></app-stepper>
+    </div>
+
+
+    <h2 *ngIf="loads.length === 0" class="text-center">{{ 'NoLoads-translate' | translate }}</h2>
+</div>
+
+<div class="row justify-content-center mx-0">
+    <div class="col-6 col-sm-5 col-md-4 col-lg-3 col-xl-2">
+        <button class="btn btn-secondary mx-auto d-block w-100 my-2" *ngIf="loads && loads.length > 0 && !loadsMoreLoading && !(driverMode && status === 'ASSIGNED')" (click)="loadMoreLoads()" [disabled]="noMoreLoadsAvailable"
+        [ngClass]="{ 'fs-7': translateService.currentLang === 'uk' }">{{ 'LoadMoreLoads-translate' | translate | uppercase }}</button>
+        <mat-spinner [diameter]="40" *ngIf="loadsMoreLoading" class="mt-2 mx-auto"></mat-spinner>
+    </div>
+</div>
+
+<div class="row justify-content-center mx-0" *ngIf="!loadsLoading && status === 'NEW'">
+    <div class="col-6 col-sm-5 col-md-4 col-lg-3 col-xl-2">
+        <button class="btn btn-success text-uppercase mx-auto d-block w-100" (click)="navigateToLoadManagePage(false)"
+            [ngClass]="{ 'fs-7': translateService.currentLang === 'uk' }">{{
+            'NewLoad-translate' | translate }}</button>
+    </div>
+</div>
+
+<div class="row justify-content-center mx-0" *ngIf="status === 'SHIPPED'">
+
+    <div class="col-7 col-sm-6 col-md-4 col-xl-3" *ngIf="!loadsLoading && !generatedLoadReports">
+        <button class="btn btn-success text-uppercase w-100 mt-3" 
+            (click)="generateReports()" [disabled]="loads && loads.length === 0"
+            [ngClass]="{ 'fs-7': translateService.currentLang === 'uk' }">
+            {{ 'GenerateLoadReports-translate' | translate | uppercase }}
+        </button>
+        <mat-spinner [diameter]="50" *ngIf="generatingLoadReports" class="mx-auto"></mat-spinner>
+    </div>
+
+    <div class="col-7 col-sm-5 col-md-4 col-xl-2" *ngIf="!loadsLoading && generatedLoadReports">    
+        <button class="btn btn-success text-uppercase w-100 mt-3" (click)="download()"
+            [ngClass]="{ 'fs-7': translateService.currentLang === 'uk' }">
+            {{ 'DownloadLoadReports-translate' | translate | uppercase }}
+        </button>
+    </div>
+    
+</div>
+
+<mat-spinner [diameter]="70" *ngIf="loadsLoading" class="mt-5 mx-auto"></mat-spinner>

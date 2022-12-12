@@ -1,0 +1,12 @@
+::ng-deep.mat-tab-label,
+::ng-deep.mat-tab-label-active {
+    min-width: 0 !important;
+    padding: 3px !important;
+    margin: 4px 8px !important;
+    font-size: 16px;
+}
+
+::ng-deep.mat-tab-body-content {
+    overflow: hidden !important;
+}
+
